@@ -1,0 +1,51 @@
+html, body, table, tbody, tr, td{
+	margin:0px;
+	padding:0px;
+	background-color:#0085ad;
+	color:#ffffff;
+}
+html{
+	font-family:arial;
+}
+#header{
+	width:100%;
+	height:5%;
+	padding:6px;
+	padding:0.5em;
+	background-color:#0085ad;
+}
+#content{
+	height:95%;
+}
+#logo{
+	height:32px;
+	height:2em;
+}
+#header_text{
+	heigth:40px;
+	height:2.5em;
+	color:#FFFFFF;
+	font-size:125%;
+}
+#main_screen{
+	min-height:95%;
+}
+div center{
+	height:100%;
+}
+a{
+	color:white;
+	text-decoration:none;
+}
+#list_table{
+	font-size:200%;
+	padding:0px;
+	margin:0px;
+}
+.list_button{
+	height:16px;
+	height:1.2em;
+}
+hr{
+	position:relative;
+}
