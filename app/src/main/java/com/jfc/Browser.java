@@ -31,8 +31,10 @@ public class Browser extends ActionBarActivity {
                         public void run() {
                             SharedPreferences sp = getApplication().getSharedPreferences("MainSharedPreferences", Context.MODE_PRIVATE);
                             Instrumentation inst = new Instrumentation();
-                            //if(finalUrl.equals("https://jfc.itslearning.com/index.aspx"))
-                            //    inst.sendCharacterSync(KeyEvent.KEYCODE_TAB);
+                            if(finalUrl.equals("https://jfc.itslearning.com/index.aspx")) {
+                                inst.sendCharacterSync(KeyEvent.KEYCODE_TAB);
+                                inst.sendCharacterSync(KeyEvent.KEYCODE_TAB);
+                            }
                             //inst.sendStringSync(sp.getString("Username",""));
                             //inst.sendCharacterSync(KeyEvent.KEYCODE_TAB);
                             //inst.sendStringSync(sp.getString("Password",""));
