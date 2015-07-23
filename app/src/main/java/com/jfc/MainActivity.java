@@ -1,43 +1,35 @@
 package com.jfc;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Instrumentation;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.StrictMode;
+import android.support.annotation.DimenRes;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -51,7 +43,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -68,7 +59,9 @@ public class MainActivity extends ActionBarActivity {
 
     public String[] buttonLinks;
 
-    Button more;
+    TextView more;
+    TextView settings;
+    LinearLayout linearLayoutHorizontal;
 
     String screenOrientation;
 
@@ -159,24 +152,37 @@ public class MainActivity extends ActionBarActivity {
 
         LinearLayout linearLayoutVertical = new LinearLayout(this);
         linearLayoutVertical.setOrientation(LinearLayout.VERTICAL);
-        LinearLayout linearLayoutHorizontal = new LinearLayout(this);
+        linearLayoutHorizontal = new LinearLayout(this);
         linearLayoutHorizontal.setOrientation(LinearLayout.HORIZONTAL);
         linearLayoutHorizontal.setLayoutParams(new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         //Create buttons
-        Button settings = new Button(this);
-        more = new Button(this);
+        settings = new TextView(this);
+        more = new TextView(this);
+        settings.setGravity(Gravity.CENTER);
+        more.setGravity(Gravity.CENTER);
+        settings.setTextColor(Color.WHITE);
+        more.setTextColor(Color.WHITE);
+        settings.setTextSize(20);
+        more.setTextSize(20);
+
         LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(width/2, ViewGroup.LayoutParams.WRAP_CONTENT);
         more.setLayoutParams(buttonParams);
         settings.setLayoutParams(buttonParams);
-        more.setText("Meer");
-        settings.setText("Instellingen");
+        more.setText(getResources().getString(R.string.more));
+        settings.setText(getResources().getString(R.string.settings));
         linearLayoutHorizontal.addView(settings);
         linearLayoutHorizontal.addView(more);
 
         linearLayoutVertical.addView(llHor);
         linearLayoutVertical.setGravity(Gravity.CENTER_HORIZONTAL);
         linearLayoutVertical.setLayoutParams(new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        linearLayoutHorizontal.setId(R.id.linearLayoutHorizontal);
+        LinearLayout divider = new LinearLayout(this);
+        divider.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 5));
+        divider.setBackgroundColor(Color.WHITE);
+        linearLayoutVertical.addView(divider);
+        linearLayoutVertical.setId(R.id.linearLayoutVertical);
         linearLayoutVertical.addView(linearLayoutHorizontal);
 
         rootlayout = new RelativeLayout(this);
@@ -224,6 +230,10 @@ public class MainActivity extends ActionBarActivity {
         }catch (ArithmeticException e){
             e.printStackTrace();
         }
+
+        int linearLayoutHorizontalHeight = linearLayoutHorizontal.getLayoutParams().height;
+        more.getLayoutParams().height = linearLayoutHorizontalHeight;
+        settings.getLayoutParams().height = linearLayoutHorizontalHeight;
     }
 
     private void checkForLogin(){
@@ -312,10 +322,7 @@ public class MainActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+
 
         return super.onOptionsItemSelected(item);
     }

@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.ActionBarActivity;
@@ -39,6 +40,8 @@ public class Browser extends ActionBarActivity {
         browserWebView = (WebView) findViewById(R.id.browserWebView);
         spinner = (ProgressBar) findViewById(R.id.progressBar1);
         loadingTextView = (TextView) findViewById(R.id.loginTextView);
+
+        layout.setBackgroundColor(Color.parseColor("#0085ad"));
 
         inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
@@ -140,11 +143,6 @@ public class Browser extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }

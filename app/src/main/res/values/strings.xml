@@ -8,4 +8,6 @@
     <string name="browser_login_text">Je wordt ingelogd, momentje geduld alsjeblieft&#8230;</string>
     <string name="username">Gebruikersnaam</string>
     <string name="password">Wachtwoord</string>
+    <string name="settings">Instellingen</string>
+    <string name="more">Meer</string>
 </resources>
