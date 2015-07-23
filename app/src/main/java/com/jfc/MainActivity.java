@@ -189,7 +189,7 @@ public class MainActivity extends ActionBarActivity {
 
     private void setButtonSizes(){
         //Set button size
-        int size = 0;
+        int size;
         //height = rootlayout.getHeight() - dpToPx(48);
         System.out.println("Root height: "+rootlayout.getHeight());
         System.out.println("more.getHeight() = "+more.getHeight());
@@ -302,8 +302,7 @@ public class MainActivity extends ActionBarActivity {
 
     public int dpToPx(int dp) {
         DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
-        int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-        return px;
+        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
     @Override
@@ -391,64 +390,84 @@ public class MainActivity extends ActionBarActivity {
     private void setImageListeners(){
         final SharedPreferences sp = getApplication().getSharedPreferences("MainSharedPreferences", Context.MODE_PRIVATE);
         System.out.println("Setting onclicklisteners");
-        try {
-            button1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    System.out.println("sp.getString geeft: "+sp.getString("startImageLink1", ""));
+                button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("sp.getString geeft: "+sp.getString("startImageLink1", ""));
+                try {
                     if (!sp.getString("startImageLink1", "").equals("")) {
                         navigateToUrl(sp.getString("startImageLink1", ""));
                     }
+                }catch (NullPointerException e){
+                    e.printStackTrace();
                 }
-            });
-            button2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    System.out.println("sp.getString geeft: "+sp.getString("startImageLink2", ""));
+            }
+        });
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("sp.getString geeft: "+sp.getString("startImageLink2", ""));
+                try {
                     if (!sp.getString("startImageLink2", "").equals("")) {
                         navigateToUrl(sp.getString("startImageLink2", ""));
                     }
+                }catch (NullPointerException e){
+                    e.printStackTrace();
                 }
-            });
-            button3.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    System.out.println("sp.getString geeft: "+sp.getString("startImageLink3", ""));
+            }
+        });
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("sp.getString geeft: "+sp.getString("startImageLink3", ""));
+                try {
                     if (!sp.getString("startImageLink3", "").equals("")) {
                         navigateToUrl(sp.getString("startImageLink3", ""));
                     }
+                }catch (NullPointerException e){
+                    e.printStackTrace();
                 }
-            });
-            button4.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    System.out.println("sp.getString geeft: "+sp.getString("startImageLink4", ""));
+            }
+        });
+        button4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("sp.getString geeft: "+sp.getString("startImageLink4", ""));
+                try {
                     if (!sp.getString("startImageLink4", "").equals("")) {
                         navigateToUrl(sp.getString("startImageLink4", ""));
                     }
+                }catch (NullPointerException e){
+                    e.printStackTrace();
                 }
-            });
-            button5.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    System.out.println("sp.getString geeft: "+sp.getString("startImageLink5", ""));
+            }
+        });
+        button5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("sp.getString geeft: "+sp.getString("startImageLink5", ""));
+                try {
                     if (!sp.getString("startImageLink5", "").equals("")) {
                         navigateToUrl(sp.getString("startImageLink5", ""));
                     }
+                }catch (NullPointerException e){
+                    e.printStackTrace();
                 }
-            });
-            button6.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    System.out.println("sp.getString geeft: "+sp.getString("startImageLink6", ""));
+            }
+        });
+        button6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("sp.getString geeft: "+sp.getString("startImageLink6", ""));
+                try {
                     if (!sp.getString("startImageLink6", "").equals("")) {
                         navigateToUrl(sp.getString("startImageLink6", ""));
                     }
+                }catch (NullPointerException e){
+                    e.printStackTrace();
                 }
-            });
-        }catch(NullPointerException e){
-            e.printStackTrace();
-        }
+            }
+        });
     }
 
     public void navigateToUrl(String url){
@@ -492,7 +511,7 @@ public class MainActivity extends ActionBarActivity {
             BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), getFilesDir().getAbsolutePath()+"/"+filename);
             imageView.setImageDrawable(bitmapDrawable);
         } catch(Exception e) {
-
+            e.printStackTrace();
         }
     }
 
