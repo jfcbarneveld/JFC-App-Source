@@ -127,7 +127,7 @@ public class Browser extends ActionBarActivity {
     }
 
     private boolean testUrl(String url){
-        if(url.equals("https://jfc.itslearning.com/index.aspx") || url.equals("https://jfc.magister.net/#/inloggen")){
+        if(url.equals("https://jfc.itslearning.com/index.aspx") || url.equals("https://jfc.magister.net/#/inloggen") || url.equals("http://jfc.itslearning.com") || url.equals("http://jfc.magister.net")){
             return true;
         }else return false;
     }
