@@ -10,4 +10,5 @@
     <string name="password">Wachtwoord</string>
     <string name="settings">Instellingen</string>
     <string name="more">Meer</string>
+    <string name="title_activity_more_list">MoreList</string>
 </resources>

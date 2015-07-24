@@ -28,6 +28,7 @@ import android.webkit.WebSettings;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -47,8 +48,9 @@ import java.net.URL;
 
 public class MainActivity extends ActionBarActivity {
 
-    public String homeUrl = "http://jfcbarneveld.github.io/";
-
+    public static String HOME_URL = "http://jfcbarneveld.github.io/";
+    public static String PRIMARY_COLOR = "#0085ad";
+    public static int PRIMARY_TEXT_COLOR = Color.WHITE;
     //Define image buttons
     public ImageView button1;
     public ImageView button2;
@@ -56,6 +58,8 @@ public class MainActivity extends ActionBarActivity {
     public ImageView button4;
     public ImageView button5;
     public ImageView button6;
+
+    boolean firstTime = true;
 
     public String[] buttonLinks;
 
@@ -121,6 +125,7 @@ public class MainActivity extends ActionBarActivity {
 
         //Get images
         getImages();
+        System.out.println("Setting listeners...");
         setImageListeners();
 
 
@@ -129,7 +134,7 @@ public class MainActivity extends ActionBarActivity {
         llHor.setOrientation(LinearLayout.HORIZONTAL);
         llHor.setLayoutParams(llParamsWrapContent);
         llHor.setGravity(Gravity.CENTER_HORIZONTAL);
-        llHor.setBackgroundColor(Color.parseColor("#0085ad"));
+        llHor.setBackgroundColor(Color.parseColor(PRIMARY_COLOR));
 
         if (screenOrientation.equals("landscape")){
             llVer1.addView(button1);
@@ -161,10 +166,19 @@ public class MainActivity extends ActionBarActivity {
         more = new TextView(this);
         settings.setGravity(Gravity.CENTER);
         more.setGravity(Gravity.CENTER);
-        settings.setTextColor(Color.WHITE);
-        more.setTextColor(Color.WHITE);
+        settings.setTextColor(PRIMARY_TEXT_COLOR);
+        more.setTextColor(PRIMARY_TEXT_COLOR);
         settings.setTextSize(20);
         more.setTextSize(20);
+
+        more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("Button clicked...");
+                Intent i = new Intent(MainActivity.this, MoreList.class);
+                startActivity(i);
+            }
+        });
 
         LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(width/2, ViewGroup.LayoutParams.WRAP_CONTENT);
         more.setLayoutParams(buttonParams);
@@ -188,9 +202,13 @@ public class MainActivity extends ActionBarActivity {
         rootlayout = new RelativeLayout(this);
         rootlayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         rootlayout.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-        rootlayout.setBackgroundColor(Color.parseColor("#0085ad"));
+        rootlayout.setBackgroundColor(Color.parseColor(PRIMARY_COLOR));
         rootlayout.addView(linearLayoutVertical);
+        System.out.println("Now setting contentView to rootlayout...");
         setContentView(rootlayout);
+
+        System.out.println("Now going to redownload images in case they already existed...");
+
     }
 
     private void setButtonSizes(){
@@ -330,10 +348,14 @@ public class MainActivity extends ActionBarActivity {
     public void getImages(){
         try {
             File image6 = new File(getFilesDir().getAbsolutePath()+"/"+"startImage6.png");
-            if(image6.exists()){
+            System.out.println("exists? "+image6.exists()+"firstTime? "+firstTime);
+            if(image6.exists() && firstTime){
                 setImages();
+                System.out.println("Images already downloaded, skipping for now...");
+                return;
             }
-            Document doc = Jsoup.connect(homeUrl+"index.html").get();
+            System.out.println("Downloading info...");
+            Document doc = Jsoup.connect(HOME_URL+"index.html").get();
             Elements buttons = doc.select(".buttons");
             Elements links = doc.select(".buttons_link");
             String[] buttonUrls = new String[10];
@@ -368,12 +390,13 @@ public class MainActivity extends ActionBarActivity {
             spe.putString("startImageLink5",buttonLinks[4]);
             spe.putString("startImageLink6",buttonLinks[5]);
             spe.apply();
-            downloadFile("startImage1", homeUrl + buttonUrls[0], button1);
-            downloadFile("startImage2",homeUrl+buttonUrls[1],button2);
-            downloadFile("startImage3",homeUrl+buttonUrls[2],button3);
-            downloadFile("startImage4",homeUrl+buttonUrls[3],button4);
-            downloadFile("startImage5",homeUrl+buttonUrls[4],button5);
-            downloadFile("startImage6",homeUrl+buttonUrls[5],button6);
+            downloadFile("startImage1.png", HOME_URL + buttonUrls[0], button1);
+            downloadFile("startImage2.png",HOME_URL+buttonUrls[1],button2);
+            downloadFile("startImage3.png",HOME_URL+buttonUrls[2],button3);
+            downloadFile("startImage4.png",HOME_URL+buttonUrls[3],button4);
+            downloadFile("startImage5.png",HOME_URL+buttonUrls[4],button5);
+            downloadFile("startImage6.png",HOME_URL+buttonUrls[5],button6);
+            System.out.println("All downloads finished");
         }catch (IOException e){
             e.printStackTrace();
             AlertDialog.Builder popup = new AlertDialog.Builder(this);
@@ -391,6 +414,7 @@ public class MainActivity extends ActionBarActivity {
                     getImages();
                 }
             });
+            popup.show();
         }
     }
 
@@ -487,19 +511,20 @@ public class MainActivity extends ActionBarActivity {
         BitmapDrawable bitmapDrawable1 = new BitmapDrawable(getResources(), getFilesDir().getAbsolutePath()+"/"+"startImage1.png");
         button1.setImageDrawable(bitmapDrawable1);
         BitmapDrawable bitmapDrawable2 = new BitmapDrawable(getResources(), getFilesDir().getAbsolutePath()+"/"+"startImage2.png");
-        button1.setImageDrawable(bitmapDrawable2);
+        button2.setImageDrawable(bitmapDrawable2);
         BitmapDrawable bitmapDrawable3 = new BitmapDrawable(getResources(), getFilesDir().getAbsolutePath()+"/"+"startImage3.png");
-        button1.setImageDrawable(bitmapDrawable3);
+        button3.setImageDrawable(bitmapDrawable3);
         BitmapDrawable bitmapDrawable4 = new BitmapDrawable(getResources(), getFilesDir().getAbsolutePath()+"/"+"startImage4.png");
-        button1.setImageDrawable(bitmapDrawable4);
+        button4.setImageDrawable(bitmapDrawable4);
         BitmapDrawable bitmapDrawable5 = new BitmapDrawable(getResources(), getFilesDir().getAbsolutePath()+"/"+"startImage5.png");
-        button1.setImageDrawable(bitmapDrawable5);
+        button5.setImageDrawable(bitmapDrawable5);
         BitmapDrawable bitmapDrawable6 = new BitmapDrawable(getResources(), getFilesDir().getAbsolutePath()+"/"+"startImage6.png");
-        button1.setImageDrawable(bitmapDrawable6);
+        button6.setImageDrawable(bitmapDrawable6);
     }
 
     private void downloadFile(String filename, String urlString, ImageView imageView){
         try {
+            System.out.println("Downloading "+urlString+" as "+filename);
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setDoInput(true);
@@ -519,32 +544,6 @@ public class MainActivity extends ActionBarActivity {
             imageView.setImageDrawable(bitmapDrawable);
         } catch(Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            System.out.println("Getting image from "+urldisplay);
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
         }
     }
 }

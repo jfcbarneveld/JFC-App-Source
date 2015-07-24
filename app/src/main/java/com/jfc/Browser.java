@@ -36,10 +36,19 @@ public class Browser extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browser);
+
         layout = (RelativeLayout) findViewById(R.id.relativeBrowserLayout);
         browserWebView = (WebView) findViewById(R.id.browserWebView);
         spinner = (ProgressBar) findViewById(R.id.progressBar1);
         loadingTextView = (TextView) findViewById(R.id.loginTextView);
+        loadingTextView.setTextColor(Color.WHITE);
+
+        String url = getIntent().getStringExtra("url");
+        System.out.println("url to load is: " + url + " , testUrl(url) is: " + testUrl(url));
+        if(!testUrl(url)){
+            System.out.println("Showing browser...");
+            showBrowser();
+        }
 
         layout.setBackgroundColor(Color.parseColor("#0085ad"));
 
@@ -49,9 +58,10 @@ public class Browser extends ActionBarActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 final String finalUrl = url;
-                if (url.equals("https://jfc.itslearning.com/index.aspx") || url.equals("https://jfc.magister.net/#/inloggen")) {
+                System.out.println("Url is: " + url + " , spinner.getVisibility() = " + spinner.getVisibility() + " , View.GONE = " + View.GONE);
+                if (testUrl(url)) {
                     //Hide browser if visible to login
-                    if(spinner.getVisibility() == View.GONE){
+                    if (spinner.getVisibility() == View.GONE) {
                         hideBrowser();
                     }
                     new Thread(new Runnable() {
@@ -72,7 +82,7 @@ public class Browser extends ActionBarActivity {
                             try {
                                 if (Browser.this.getCurrentFocus() != null)
                                     inputMethodManager.hideSoftInputFromWindow(Browser.this.getCurrentFocus().getWindowToken(), 0);
-                            }catch(NullPointerException e){
+                            } catch (NullPointerException e) {
                                 e.printStackTrace();
                             }
 
@@ -84,7 +94,7 @@ public class Browser extends ActionBarActivity {
                             try {
                                 if (Browser.this.getCurrentFocus() != null)
                                     inputMethodManager.hideSoftInputFromWindow(Browser.this.getCurrentFocus().getWindowToken(), 0);
-                            }catch(NullPointerException e){
+                            } catch (NullPointerException e) {
                                 e.printStackTrace();
                             }
 
@@ -98,9 +108,9 @@ public class Browser extends ActionBarActivity {
                             }
                         }
                     }).start();
-                }else if(spinner.getVisibility() != View.GONE){
+                } else if (spinner.getVisibility() != View.GONE) {
                     //Show browser again
-                    setBrowserWidth();
+                    showBrowser();
                 }
             }
         });
@@ -112,10 +122,18 @@ public class Browser extends ActionBarActivity {
         webSettings.setBuiltInZoomControls(true);
         webSettings.setJavaScriptEnabled(true);
         webSettings.setSupportZoom(false);
-        browserWebView.loadUrl(getIntent().getStringExtra("url"));
+
+        browserWebView.loadUrl(url);
     }
 
-    private void setBrowserWidth(){
+    private boolean testUrl(String url){
+        if(url.equals("https://jfc.itslearning.com/index.aspx") || url.equals("https://jfc.magister.net/#/inloggen")){
+            return true;
+        }else return false;
+    }
+
+    private void showBrowser(){
+        System.out.println("Setting browser width");
         browserWebView.getLayoutParams().width = layout.getLayoutParams().width;
         browserWebView.getLayoutParams().height = layout.getLayoutParams().height;
         spinner.setVisibility(View.GONE);
@@ -124,6 +142,7 @@ public class Browser extends ActionBarActivity {
     }
 
     private void hideBrowser(){
+        System.out.println("Hiding browser");
         browserWebView.getLayoutParams().width = 0;
         browserWebView.getLayoutParams().height = 0;
         spinner.setVisibility(View.VISIBLE);
